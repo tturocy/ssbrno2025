@@ -1,8 +1,11 @@
 {{ block title }}
-    Page title
+    Results
 {{ endblock }}
 
 {{ block content }}
+
+You purchased {{ player.tickets_purchased }} tickets.
+The other person purchased {{ player.tickets_purchased_by_others }} tickets.
 
     {{ next_button }}
 {{ endblock }}
