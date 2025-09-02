@@ -12,6 +12,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'contest'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 3
+    NUM_PAID_ROUNDS = 1
     ENDOWMENT = 10
     COST_PER_TICKET = 0.5
     PRIZE = 8
@@ -19,13 +20,19 @@ class C(BaseConstants):
 
 class Subsession(BaseSubsession):
     csf = models.StringField()
-    is_paid = models.BooleanField()
+    is_paid = models.BooleanField(initial=False)
 
     def setup_round(self):
         self.csf = self.session.config["contest_csf"]
-        self.is_paid = self.round_number % 2 == 1
+        if self.round_number == 1:
+            self.setup_paid_rounds()
         for group in self.get_groups():
             group.setup_round()
+
+    def setup_paid_rounds(self):
+        for rd in random.sample(self.in_rounds(1, C.NUM_ROUNDS),
+                                k=C.NUM_PAID_ROUNDS):
+            rd.is_paid = True
 
     def determine_outcome(self):
         for group in self.get_groups():
