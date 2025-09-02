@@ -21,7 +21,7 @@ class Subsession(BaseSubsession):
 
     def setup_round(self):
         self.csf = "share"
-        self.is_paid = True
+        self.is_paid = self.round_number % 2 == 1
         for group in self.get_groups():
             group.setup_round()
 
@@ -57,6 +57,8 @@ class Group(BaseGroup):
                     player.tickets_purchased * self.cost_per_ticket +
                     self.prize * player.prize_won
             )
+            if player.subsession.is_paid:
+                player.payoff = player.earnings
 
 
 class Player(BasePlayer):
