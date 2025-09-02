@@ -32,6 +32,10 @@ class Subsession(BaseSubsession):
             lookup[letter] = self.lookup_table.index(letter)+1
         return lookup
 
+    @property
+    def correct_response(self):
+        return [self.lookup_dict[letter] for letter in self.word]
+
 
 class Group(BaseGroup):
     pass
@@ -45,13 +49,29 @@ class Player(BasePlayer):
     response_5 = models.IntegerField()
     is_correct = models.BooleanField()
 
+    @property
+    def response_fields(self):
+        return [
+            "response_1",
+            "response_2",
+            "response_3",
+            "response_4",
+            "response_5",
+        ]
+
+    @property
+    def response(self):
+        return [
+            self.response_1,
+            self.response_2,
+            self.response_3,
+            self.response_4,
+            self.response_5,
+        ]
+
     def check_response(self):
         self.is_correct = (
-            self.response_1 == self.subsession.lookup_dict[self.subsession.word[0]] and
-            self.response_2 == self.subsession.lookup_dict[self.subsession.word[1]] and
-            self.response_3 == self.subsession.lookup_dict[self.subsession.word[2]] and
-            self.response_4 == self.subsession.lookup_dict[self.subsession.word[3]] and
-            self.response_5 == self.subsession.lookup_dict[self.subsession.word[4]]
+            self.response == self.subsession.correct_response
         )
         if self.is_correct:
             self.payoff = self.subsession.payment_per_correct
@@ -70,13 +90,10 @@ class Intro(Page):
 
 class Decision(Page):
     form_model = "player"
-    form_fields = [
-        "response_1",
-        "response_2",
-        "response_3",
-        "response_4",
-        "response_5",
-    ]
+
+    @staticmethod
+    def get_form_fields(player):
+        return player.response_fields
 
     @staticmethod
     def before_next_page(player, timeout_happened):
