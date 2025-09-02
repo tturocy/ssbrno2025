@@ -99,6 +99,9 @@ class Player(BasePlayer):
     def tickets_purchased_by_others(self):
         return self.group.total_tickets_purchased - self.tickets_purchased
 
+    def in_paid_rounds(self):
+        return [rd for rd in self.in_all_rounds() if rd.subsession.is_paid]
+
 
 # PAGES
 class StartRound(WaitPage):
