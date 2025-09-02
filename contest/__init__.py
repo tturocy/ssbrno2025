@@ -34,6 +34,10 @@ class Group(BaseGroup):
     cost_per_ticket = models.CurrencyField()
     prize = models.CurrencyField()
 
+    @property
+    def total_tickets_purchased(self):
+        return sum(player.tickets_purchased for player in self.get_players())
+
     def setup_round(self):
         self.cost_per_ticket = C.COST_PER_TICKET
         self.prize = C.PRIZE
@@ -41,7 +45,7 @@ class Group(BaseGroup):
             player.setup_round()
 
     def determine_outcome(self):
-        total = sum(player.tickets_purchased for player in self.get_players())
+        total = self.total_tickets_purchased
         for player in self.get_players():
             try:
                 player.prize_won = player.tickets_purchased / total
@@ -70,7 +74,7 @@ class Player(BasePlayer):
 
     @property
     def tickets_purchased_by_others(self):
-        return self.coplayer.tickets_purchased
+        return self.group.total_tickets_purchased - self.tickets_purchased
 
 
 # PAGES
