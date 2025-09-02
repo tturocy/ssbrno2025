@@ -18,6 +18,17 @@ class Subsession(BaseSubsession):
     lookup_table = models.StringField()
     time_for_task = models.IntegerField()
 
+    def setup_round(self):
+        self.payment_per_correct = Currency(0.10)
+        self.word = "AB"
+
+    @property
+    def lookup_dict(self):
+        return {
+            "A": 1,
+            "B": 2,
+        }
+
 
 class Group(BaseGroup):
     pass
@@ -30,6 +41,10 @@ class Player(BasePlayer):
     response_4 = models.IntegerField()
     response_5 = models.IntegerField()
     is_correct = models.BooleanField()
+
+
+def creating_session(subsession):
+    subsession.setup_round()
 
 
 # PAGES
