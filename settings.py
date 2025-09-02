@@ -2,11 +2,20 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name="contest_demo",
+        name="contest_share",
         app_sequence=[
             "contest",
         ],
         num_demo_participants=2,
+        contest_csf="share",
+    ),
+    dict(
+        name="contest_allpay",
+        app_sequence=[
+            "contest",
+        ],
+        num_demo_participants=2,
+        contest_csf="allpay",
     ),
     dict(
         name="splash_demo",
