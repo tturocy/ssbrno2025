@@ -20,7 +20,7 @@ class Subsession(BaseSubsession):
     is_paid = models.BooleanField()
 
     def setup_round(self):
-        self.csf = "share"
+        self.csf = "allpay"
         self.is_paid = self.round_number % 2 == 1
         for group in self.get_groups():
             group.setup_round()
@@ -44,7 +44,17 @@ class Group(BaseGroup):
         for player in self.get_players():
             player.setup_round()
 
-    def determine_outcome(self):
+    def determine_outcome_allpay(self):
+        max_tickets = max(player.tickets_purchased for player in self.get_players())
+        num_tied = len([player for player in self.get_players()
+                        if player.tickets_purchased == max_tickets])
+        for player in self.get_players():
+            if player.tickets_purchased == max_tickets:
+                player.prize_won = 1 / num_tied
+            else:
+                player.prize_won = 0
+
+    def determine_outcome_share(self):
         total = self.total_tickets_purchased
         for player in self.get_players():
             try:
@@ -52,6 +62,13 @@ class Group(BaseGroup):
             except ZeroDivisionError:
                 player.prize_won = 1 / len(self.get_players())
 
+    def determine_outcome(self):
+        if self.subsession.csf == "share":
+            self.determine_outcome_share()
+        elif self.subsession.csf == "allpay":
+            self.determine_outcome_allpay()
+
+        for player in self.get_players():
             player.earnings = (
                     player.endowment -
                     player.tickets_purchased * self.cost_per_ticket +
