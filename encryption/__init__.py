@@ -86,7 +86,8 @@ class Player(BasePlayer):
         self.started_task_at = time.time()
 
     def get_time_elapsed(self):
-        return time.time() - self.in_round(1).started_task_at
+        self.time_elapsed = time.time() - self.in_round(1).started_task_at
+        return self.time_elapsed
 
     def get_remaining_time(self):
         return self.subsession.time_for_task - self.get_time_elapsed()
