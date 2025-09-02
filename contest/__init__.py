@@ -1,3 +1,5 @@
+import random
+
 from otree.api import *
 
 
@@ -62,11 +64,25 @@ class Group(BaseGroup):
             except ZeroDivisionError:
                 player.prize_won = 1 / len(self.get_players())
 
+    def determine_outcome_lottery(self):
+        try:
+            winner = random.choices(self.get_players(), k=1,
+                                    weights=[p.tickets_purchased for p in self.get_players()])[0]
+        except ValueError:
+            winner = random.choice(self.get_players())
+        for player in self.get_players():
+            if player == winner:
+                player.prize_won = 1
+            else:
+                player.prize_won = 0
+
     def determine_outcome(self):
         if self.subsession.csf == "share":
             self.determine_outcome_share()
         elif self.subsession.csf == "allpay":
             self.determine_outcome_allpay()
+        elif self.subsession.csf == "lottery":
+            self.determine_outcome_lottery()
 
         for player in self.get_players():
             player.earnings = (

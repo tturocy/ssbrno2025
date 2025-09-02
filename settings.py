@@ -18,6 +18,14 @@ SESSION_CONFIGS = [
         contest_csf="allpay",
     ),
     dict(
+        name="contest_lottery",
+        app_sequence=[
+            "contest",
+        ],
+        num_demo_participants=2,
+        contest_csf="lottery",
+    ),
+    dict(
         name="splash_demo",
         app_sequence=[
             "splash"
