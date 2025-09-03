@@ -37,7 +37,15 @@
     </div>
 </div>
 
-    {{ formfields }}
+<div class="row justify-content-center">
+{{ for field in player.response_fields }}
+    <div class="col-2">
+        <input type="number" class="form-control" inputmode="numeric" id="id_{{field}}" min="0" name="{{field}}" required value="">
+    </div>
+{{ endfor }}
+
+</div>
+
     {{ next_button }}
 
 {{ endblock }}
