@@ -3,8 +3,31 @@
 {{ endblock }}
 {{ block content }}
 
-
-    Block 1 earnings: {{ player.earnings_contest }}
-    Block 2 earnings: {{ player.earnings_encryption }}
+<table class="table">
+    <thead>
+        <tr class="table-dark">
+            <th>Component</th>
+            <th class="text-end">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Earnings from Part One</td>
+        <td class="text-end">{{ player.earnings_contest }}</td>
+    </tr>
+    <tr>
+        <td>Earnings from Part Two</td>
+        <td class="text-end">{{ player.earnings_encryption }} </td>
+    </tr>
+    <tr class="table-info">
+        <td>Your participation payment</td>
+        <td class="text-end">{{ session.config.participation_fee }}</td>
+    </tr>
+    <tr class="table-success fw-bold">
+        <td>Your earnings</td>
+        <td class="text-end">{{ participant.payoff_plus_participation_fee }}</td>
+    </tr>
+    </tbody>
+</table>
 
 {{ endblock }}
