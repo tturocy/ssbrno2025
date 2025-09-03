@@ -3,7 +3,23 @@
 {{ endblock }}
 {{ block content }}
 
-    The lookup table is {{ subsession.lookup_dict }}.
+<table class="table">
+    <thead>
+        <tr class="text-center fw-bold">
+            {{ for letter in subsession.lookup_dict.keys }}
+                <th>{{ letter }}</th>
+            {{ endfor }}
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="text-center">
+            {{ for value in subsession.lookup_dict.values }}
+                <td>{{ value }}</td>
+            {{ endfor }}
+        </tr>
+    </tbody>
+</table>
+
     <br/>
     The word to encode is {{ subsession.word }}.
 
