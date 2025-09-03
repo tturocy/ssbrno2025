@@ -34,6 +34,13 @@ SESSION_CONFIGS = [
         contest_csf="lottery",
     ),
     dict(
+        name="summary_test",
+        app_sequence=[
+            "summary"
+        ],
+        num_demo_participants=2,
+    ),
+    dict(
         name="splash_demo",
         app_sequence=[
             "splash"
