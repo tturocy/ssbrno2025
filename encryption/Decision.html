@@ -1,6 +1,17 @@
 {{ block title }}
     Word {{ player.round_number }} to encode
 {{ endblock }}
+
+{{ block styles }}
+<style>
+    .word {
+        font-size: 2.5rem;
+        color: dodgerblue;
+        font-family: "Comic Sans MS"
+    }
+</style>
+{{ endblock }}
+
 {{ block content }}
 
 <table class="table">
@@ -20,8 +31,11 @@
     </tbody>
 </table>
 
-    <br/>
-    The word to encode is {{ subsession.word }}.
+<div class="row">
+    <div class="col-12 text-center word">
+        {{ subsession.word }}
+    </div>
+</div>
 
     {{ formfields }}
     {{ next_button }}
